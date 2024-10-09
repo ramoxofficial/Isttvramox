@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خرید محصولات</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: black;
+            background: url('your-background-image-url.gif') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .content {
+            text-align: center;
+            margin-top: 20%;
+            font-size: 2em;
+            color: #7d7d7d;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .domain-check {
+            margin-top: 20px;
+            color: white;
+            font-size: 1.2em;
+        }
+        .search-box {
+            margin-top: 10px;
+            padding: 10px;
+            border: 2px solid #fff;
+            border-radius: 25px;
+            width: 300px;
+            text-align: center;
+            font-size: 1em;
+            background: rgba(255, 255, 255, 0.7);
+        }
+        .result {
+            margin-top: 10px;
+            font-size: 1.5em;
+        }
+        .buy-domain {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #dcdcdc; /* رنگ توسی */
+            border-radius: 10px;
+            cursor: pointer;
+            color: black;
+            font-size: 1.5em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        خرید محصولات
+        <div class="domain-check">خرید دامنه دلخواه</div>
+        <input type="text" id="domainInput" class="search-box" placeholder="مثال: ramox.com" />
+        <button onclick="checkDomain()">جستجو</button>
+        <div id="result" class="result"></div>
+        <div id="buyDomain" class="buy-domain" onclick="buyDomain()">خرید دامنه</div>
+    </div>
+
+    <script>
+        function checkDomain() {
+            const domain = document.getElementById('domainInput').value;
+            const resultDiv = document.getElementById('result');
+            const buyDomainDiv = document.getElementById('buyDomain');
+
+            fetch(`https://www.whoisxmlapi.com/whoisserver/WhoisService?apiKey=at_Urn7CkxhJPZ17lIWReEt7KaQCpuHV&domainName=${domain}&outputFormat=JSON`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.WhoisRecord && data.WhoisRecord.domainAvailability === "AVAILABLE") {
+                        resultDiv.innerHTML = `<span style="color: white;">این دامنه موجود است.</span>`;
+                        buyDomainDiv.style.display = "block"; // نمایش کادر خرید دامنه
+                    } else {
+                        resultDiv.innerHTML = `<span style="color: red;">این دامنه موجود نیست.</span>`;
+                        buyDomainDiv.style.display = "none"; // مخفی کردن کادر خرید دامنه
+                    }
+                })
+                .catch(error => {
+                    resultDiv.innerHTML = `<span style="color: red;">خطا در بررسی دامنه.</span>`;
+                    buyDomainDiv.style.display = "none"; // مخفی کردن کادر خرید دامنه
+                });
+        }
+
+        function buyDomain() {
+            window.open('https://t.me/RamoxOfficial/107', '_blank'); // هدایت به لینک تلگرام
+        }
+    </script>
+</body>
+</html>
